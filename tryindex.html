@@ -7,7 +7,7 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons CDN -->
-  <script src="https://unpkg.com/lucide-react@latest/dist/lucide-react.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/lucide.js"></script>
 </head>
 <body class="bg-gray-100">
   <div id="root"></div>
@@ -20,10 +20,9 @@
 
   <script type="text/babel">
     const { useState, useEffect } = React;
-    const { Heart } = lucideReact;
+    const { Heart } = lucide;
 
     function WeddingInvitation() {
-      const colors = { primary: 'brown', secondary: 'orange', accent: 'yellow' };
       const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
       const [responseMessage, setResponseMessage] = useState("");
 
@@ -32,13 +31,13 @@
       useEffect(() => {
         const timer = setInterval(() => {
           const now = new Date();
-          const difference = weddingDate - now;
-          if (difference > 0) {
+          const diff = weddingDate - now;
+          if (diff > 0) {
             setCountdown({
-              days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-              hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-              minutes: Math.floor((difference / 1000 / 60) % 60),
-              seconds: Math.floor((difference / 1000) % 60)
+              days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+              hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+              minutes: Math.floor((diff / 1000 / 60) % 60),
+              seconds: Math.floor((diff / 1000) % 60)
             });
           }
         }, 1000);
@@ -60,10 +59,11 @@
         try {
           const res = await fetch("YOUR_WEB_APP_URL", {
             method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData)
           });
           if (res.ok) {
-            setResponseMessage("✅ Thank you! Your RSVP has been recorded.We can't wait to party with you");
+            setResponseMessage("✅ Thank you! Your RSVP has been recorded. We can't wait to party with you!");
             form.reset();
           } else {
             setResponseMessage("❌ Error submitting RSVP. Please try again.");
@@ -74,8 +74,10 @@
       };
 
       return (
-        <div className={`min-h-screen bg-gradient-to-br from-${colors.primary}-50 via-${colors.secondary}-50 to-${colors.accent}-50`}>
-          <h1 className="text-4xl text-center font-serif mt-10">Tristan & Sidney</h1>
+        <div className="min-h-screen bg-gradient-to-br from-brown-50 via-orange-50 to-yellow-50">
+          <h1 className="text-4xl text-center font-serif mt-10 flex items-center justify-center gap-2">
+            Tristan & Sidney <Heart color="red" size={32} />
+          </h1>
           <p className="text-center text-lg">November 14, 2026 • Magnolia, TX</p>
 
           <div className="text-center mt-6">
